@@ -1,0 +1,138 @@
+
+栏目目录结构：
+	栏目id是14的话
+		栏目页面：/channels/41.html(第一页要取得一共有多少页)
+			多页：/channels/41_2.html
+			多页：/channels/41_14.html
+		内容页面：/contents/41/36801.html（其中41为栏目id。后面为栏目内容id。）
+
+	内容模板两种
+		一：
+			正文位置：div的id是： <div class="text" id="content">
+			内容结构：
+				<div class="lyxwBox">
+                        <div class="txtView">
+                            <h1>鹿港小镇</h1>
+                            <div class="app">发布时间：2012-07-11 &nbsp;&nbsp;&nbsp;&nbsp;来源：</div>
+                            <div class="text" id="content">
+			标题：.lyxwBox .txtView h1
+			内容：id="content"
+			发布时间和来源： <div class="app">发布时间：2012-07-11 &nbsp;&nbsp;&nbsp;&nbsp;来源：</div>
+				其中按《 &nbsp;&nbsp;&nbsp;&nbsp;》切为两段
+				前段去掉：<发布时间：>后为发布时间
+				后段去掉<来源：>后为来源内容，部分来源为空
+		二：没有发布时间没有来源，这种是栏目单页
+			内容结构：优先取《.TS_xlyfBox》再取《.lyxwBox》
+			  <div class="lyxwBox">这一行有两种：21*<div class="lyxwBox">和22*<div class="TS_xlyfBox">
+				<div class="Title"><h5>广州概述</h5></div>
+				<div class="Text">
+				  <p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">广州，广东省省会，国家历史文化名城，我国重要的中心城市、国际商贸中心和综合交通枢纽，也是华南区域性的金融、贸易、经济、航运、物流、文化和科技中心。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">广州历史悠久，文化底蕴深厚，具有2200多年的建城史。新中国成立以来，特别是改革开放以来，古老的广州焕发出勃勃生机，城市面貌发生了翻天覆地的变化。广州的综合经济实力一直居于我国大城市前三位，人均地区生产总值也位于全国前列。近年来，广州荣膺“国际花园城市”、“中国优秀旅游城市”等称号，还荣获“联合国改善人居环境最佳范例奖”和“中国人居环境范例奖”等奖项。 </span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">在党中央、国务院和省委、省政府的坚强领导下，广州全面贯彻落实党的十八大和十八届三中、四中、五中、六中全会精神，主动适应和引领经济发展新常态，坚持稳中求进工作总基调，统筹推进稳增长、促改革、调结构、惠民生、防风险、保稳定各项工作，顺利完成了既定的目标任务。经济综合实力迈上新台阶，地区生产总值由2011年的1.24万亿元提高到2016年的1.96万亿元，年均增长9.4%,增速分别高于全国6.7%和全省7.5%，人均地区生产总值达到2.14万美元。产业结构继续优化，三次产业结构由2011年的1.6：36.9:61.5调整为1.22：30.22：68.56，现代服务业占比65%以上，对经济增长的贡献率达77%。城市综合承载力不断提升，2016年，白云国际机场旅客吞吐量达5977.66万人次，居全国第三位；广州港口货物和集装箱吞吐量分别达5.44亿吨和1884.97万标箱，位居全球前列；高速公路通车里程972公里，地铁通车10条（段）308公里。城市环境逐步改善，全市森林覆盖率42.14%，建成绿道3200公里、碳汇造林21万亩，新增森林公园33个、湿地公园19个，城市集中式饮水水源地水质达标率100%，垃圾分类处理获联合国“中国城市可持续发展范例奖”。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">近年来，广州市委、市政府认真贯彻落实“创新、协调、绿色、开放、共享”五大发展理念，在新的起点上谋划广州的新发展，提出了建设枢纽型网络城市，统筹推进国际航运枢纽、国际航空枢纽、国际科技创新枢纽“三大战略枢纽”，推进建设国际航运中心、物流中心、贸易中心、现代金融服务体系“三中心一体系”和国家创新中心城市的系列决策部署，深化建设干净整洁平安有序城市环境和市场化国际化法治化便利化营商环境及风清气正、干事创业政治生态环境，全面提升广州的综合实力和国际竞争力，进一步扩大广州在全国和国际上的影响力。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">广州认真贯彻国家旅游局“515”战略部署，全面推进旅游业发展迈上新台阶。以国家旅游综合改革试点为契机，努力推进改革措施有效实施，多项政策陆续落地；紧紧围绕供给侧结构性改革主线，优化旅游产业结构，旅游形态和新的旅游业态层出不穷、协调发展；全域旅游有序推进，不断加强“一江两岸三带”景观建设，积极打造美丽乡村，持续深化“旅游+”战略，促进旅游与其它产业的融合，商旅文体深度融合取得显著成效；大力构建国际化宣传营销体系，积极开拓国内外旅游市场，广州的国际形象和影响力进一步提升；以厕所革命为重要抓手，全面推进旅游基础设施建设和服务配套，自助游、自驾游等大众旅游服务体系基本完善，广州旅游服务标准深入人心。2016年，广州接待游客总人数1.85亿人次，接待过夜游客5940.56万人次，实现旅游业总收入3217.05亿元，旅游外汇收入62.72亿美元，旅游业增加值1367.89亿元，占全市GDP的7%。 中国旅游研究院武汉分院通过大数据研究表明，广州旅游综合实力处于中国副省级城市的第一位。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;"> </span></p><p style="line-height:1.5em;text-indent:2em"><strong><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">（一） 自然条件</span></strong></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">广州位于中国大陆南方、广东省的中南部、珠江三角洲的北端，濒临南海，毗邻香港和澳门，中国第三大河流珠江穿城而过，地理位置十分优越。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">广州地处南亚热带，北回归线穿越北部，属南亚热带典型的海洋季风气候。夏无酷暑，冬无严寒，雨量充沛，四季如春，繁花似锦。广州市各地年平均气温在21.5-22.2℃之间，雨水资源丰富，平均年降水量在1800度毫米，年降水日数在150天左右，平均相对湿度77%。由于气候温和，土壤湿润，阳光充足，广州一年四季树木常绿、鲜花常开，自古就以“花城”著称。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">全市水域面积7.44万公顷，占全市土地面积的10%，主要河流有北江、东江北干流及增江、流溪河、白坭河、珠江广州河段、市桥水道、沙湾水道等。广州市大小河流（涌）众多，集雨面积在100平方公里以上的河流共有22条，老八区主要河涌有231条、总长913公里，构成了独特的岭南水乡文化特色。从化一带有丰富的地下温泉, 水温摄氏50℃-70℃, 含有丰富的矿物质。粮食作物以优质籼稻为主, 一年两熟。经济作物以蔬菜、水果、花卉等为主。广州是“水果之乡”, 主要产荔枝、龙眼、香蕉、菠萝、木瓜、杨桃等。广州的花卉和盆景远近驰名, 以阴生观叶植物、高档盆花、鲜切花、岭南盆景为主。阴生观叶植物占全国市场一半以上, 红掌、蝴蝶兰、一品红等盆景已成为全国性的生产基地, 盆景远销欧美等海外市场。</span></p><p style="line-height:1.5em;text-indent:2em"><strong><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">（二） 政区人口</span></strong></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">广州市现辖11个区，分别是：越秀区、海珠区、荔湾区、天河区、白云区、黄埔区、花都区、番禺区、南沙区、增城区和从化区。此外，还有3个国家级开发区，即广州经济技术开发区、南沙经济技术开发区、增城经济技术开发区。其中，南沙先后获国务院批准为国家新区和自贸试验区。目前，广州市陆地总面积7434.4平方公里，其中老城区面积超过500平方公里。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">2015年末，广州市常住人口1350.11万人，城镇人口比重为85.53%，其中户籍人口854.19万人。</span></p><p style="line-height:1.5em;text-indent:2em"><strong><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">（三） 历史文化</span></strong></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">广州是国务院颁布的全国第一批历史文化名城之一。早在六七千年前的新石器时期，先民们就在这块土地上生息繁衍，创造了灿烂的史前文明，揭开了广州人文史的初页。广州又称为羊城、穗城。传说古代有5位仙人，骑五色羊，羊衔谷穗，降临广州，把谷穗赠与百姓，祝愿这里“永无饥荒”。越秀公园的五羊雕像成为广州的象征。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">广州自秦汉至明清2000多年间，一直是中国对外贸易的重要港口城市。汉武帝时期，中国船队从广州出发，远航至东南亚和南亚诸国通商贸易，东汉时期航线远达波斯湾。唐代，广州发展成为世界著名的东方大港，是当时世界最长的海路航线“广州通海夷道”的起点，中央王朝首先委派专门管理对外贸易的官员市舶使到广州。宋代，在广州首设全国第一个管理外贸机构市舶司。明清时期，广州是特殊开放的口岸，在一段较长时间里是全国唯一的对外贸易港口城市。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">广州是具有光荣革命传统的英雄城市。在近代史上有三元里人民反抗帝国主义侵略的抗英斗争、孙中山领导的反对封建统治的“三·二九”起义(又称黄花岗起义)、中国共产党领导的广州起义。因此，广州既是中国资产阶级民主革命的策源地，又是无产阶级政党领导人民群众进行革命斗争的英雄城市。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">广州历代名人辈出，代代相传。秦朝任嚣，汉朝赵佗，清朝学者屈大均，农民起义领袖洪秀全，思想政治家康有为、梁启超，领导中国民主革命、推翻几千年封建统治的孙中山等，为广州历史名城的形成和发展作出卓越的贡献。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;">广州的文物古迹众多。截至2015年底，广州有国家、省、市三级文物保护单位681个，其中，全国重点文物保护单位29个，省级文物保护单位49个，市级文物保护单位347个，区级文物保护单位256个。单体文物4298个，登记保护文物单位3157个。南越王墓有2000多年历史，光孝寺、六榕寺、怀圣寺等都有1000多年历史。有始建于隋朝的南海神庙，明朝的五仙观、镇海楼、莲花塔，清朝的陈家祠、余荫山房等。近代革命历史纪念地有毛泽东同志主办的农民运动讲习所旧址、广州起义烈士陵园、黄花岗七十二烈士墓、黄埔军校旧址、中山纪念堂、洪秀全故居等。</span></p><p style="line-height:1.5em;text-indent:2em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;"> </span></p><p style="line-height:1.5em"><span style="font-family:微软雅黑, 'microsoft yahei';font-size:14px;"> </span></p>
+				</div>
+			  </div>
+			标题：.lyxwBox .Title h5
+			内容：.lyxwBox .Text
+			 
+所有正文的第一张要识别出来作为图片内容
+www.visitgz.com
+=>www.visitgz.gov.cn
+
+
+
+栏目页面：/channels/41.html(第一页要取得一共有多少页)
+规则：取得.lyxwBox .page下内容为《尾页》或最后一个a
+	<div class="page">
+		<span>共66条</span><span>共3页</span>
+		<a href="javascript:;">第一页</a> <a href="javascript:;">上一页</a>
+		<a href="#" class="cur">1</a><a href="/channels/12_2.html">2</a><a href="/channels/12_3.html">3</a>
+		<a href="/channels/12_2.html">下一页</a>  <a href="/channels/12_3.html">尾页</a>
+	</div>
+
+		
+列表页规则：
+	<div class="lyxwBox">
+		<div class="Title"><h5>广州典故</h5></div>    
+		<div class="txtList">
+			<ul>
+				<li><span>2018-02-14</span><em></em><a href="/contents/12/37439.html" target="_blank">清朝行花街 就去“双门底”</a></li>
+
+图片文件地址规则：/upload/images/2016/5/18151530715.jpg
+
+
+
+
+首页【index】
+2话说广州【单页】
+    10广州概述【单页21】
+    11广州风俗【单页21】
+    12广州典故【列表】http://www.visitgz.gov.cn/channels/12.html
+3特色广州【index】->指向（旅游景点【index】）
+    13吃在广州【index】
+        14广州小吃【列表】http://www.visitgz.gov.cn/channels/14.html
+        15美食名店【列表】http://www.visitgz.gov.cn/channels/15.html
+        16美食街区【列表】http://www.visitgz.gov.cn/channels/16.html
+    -- 17旅游景点【index】（含有特定字段）
+    --     18都市风貌【列表】http://www.visitgz.gov.cn/channels/18.html
+    --     19历史文化【列表】http://www.visitgz.gov.cn/channels/19.html
+    --     20自然生态【列表】http://www.visitgz.gov.cn/channels/20.html
+    --     21其他景点【列表】http://www.visitgz.gov.cn/channels/21.html
+    -- 22酒店住宿【index】（含有特定字段）
+    --     23星级酒店【列表】http://www.visitgz.gov.cn/channels/23.html
+    --     24品牌酒店【列表】http://www.visitgz.gov.cn/channels/24.html
+    --     25经济酒店【列表】http://www.visitgz.gov.cn/channels/25.html
+    --     26度假村【列表】http://www.visitgz.gov.cn/channels/26.html
+    28行路有方【index】单页 只有一张图
+        29航空【单页22】
+        30铁路【单页22】
+        31地铁【单页22】
+    ##  公交车【外链】http://www.zuoche.com/
+        124长途汽车【单页22】
+        125渡轮码头【单页22】
+        126出租车【单页22】
+        171沃.行讯通出行指引【单页22】
+   33购物天堂【index】
+        34购物街区【列表】http://www.visitgz.gov.cn/channels/34.html
+        35名品商厦【列表】http://www.visitgz.gov.cn/channels/35.html
+        36岭南特产【列表】http://www.visitgz.gov.cn/channels/36.html
+    37娱乐休闲【index】
+        38特色演出【列表】http://www.visitgz.gov.cn/channels/38.html
+        39酒吧啡厅【列表】http://www.visitgz.gov.cn/channels/39.html
+        40娱乐场所【列表】http://www.visitgz.gov.cn/channels/40.html
+4旅游新闻【列表】
+    41广州新闻【列表】http://www.visitgz.gov.cn/channels/41.html
+    42广东新闻【列表】http://www.visitgz.gov.cn/channels/42.html
+    43国内新闻【列表】http://www.visitgz.gov.cn/channels/43.html
+    44国际新闻【列表】http://www.visitgz.gov.cn/channels/44.html
+8影像旅游【index】（特殊列表）
+    51----  畅游广州【视频列表】http://www.visitgz.gov.cn/channels/51.html
+    92----  360度叹广州【视频列表】http://www.visitgz.gov.cn/channels/92.html
+    93----  宣传片【视频列表】http://www.visitgz.gov.cn/channels/93.html
+    128电子杂志【专题列表】http://www.visitgz.gov.cn/channels/128.html
+    162精彩专题【专题列表】http://www.visitgz.gov.cn/channels/162.html
+    129导游词【文件列表】http://www.visitgz.gov.cn/channels/129.html
+    131图片廊【图片单页，很多张图】http://www.visitgz.gov.cn/channels/131.html
+6旅程推荐【index】
+    48一日游【列表】http://www.visitgz.gov.cn/channels/48.html
+    49二日游【列表】http://www.visitgz.gov.cn/channels/49.html
+    127绿道游【列表】http://www.visitgz.gov.cn/channels/127.html
+    50珠三角游【列表】http://www.visitgz.gov.cn/channels/50.html
+    190乡村游【列表】http://www.visitgz.gov.cn/channels/190.html
+114旅游互动【列表】
+    ##  旅游微博【外链】http://weibo.com/208820678
+    139游记攻略【列表】http://www.visitgz.gov.cn/channels/139.html
+    173网站投票【单页】（iframe：http://zxwww.02088.com/gzly_wzdc.html）
+    ##  政声传递【外链】http://www.gd.gov.cn/govpub/xxts/index.htm
+    ##  政务咨询【外链】http://www.gzly.gov.cn/a/jzxx/index.html
+9旅游服务【单页】
+    54问询中心【单页21】
+    55温馨提示【列表】http://www.visitgz.gov.cn/channels/55.html
+    118常见问题【内容单页】
+    119出游常识【单页21】
+    120护照办理【单页21】
+    121品质保障【单页21】
+    130三维实景【单页21】
+    135旅行社名录【内容单页】http://www.visitgz.gov.cn/contents/135/22575.html
+    132A级景区名录【内容单页】http://www.visitgz.gov.cn/contents/132/27569.html
+    133星级酒店名录【内容单页】http://www.visitgz.gov.cn/contents/133/27568.html
+    137包车客运企业名录【单页21】
+    207旅游集散中心名录【内容单页】http://www.visitgz.gov.cn/contents/207/29136.html
+

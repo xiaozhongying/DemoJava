@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="
+			http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
+	   default-autowire="byName" default-lazy-init="false">
+
+	<!-- 资源文件绑定 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">               
+		<!-- 国际化信息所在的文件名 -->
+		<property name="basename" value="config/i18n/message" />
+		<!-- 如果在国际化资源文件中找不到对应代码的信息，就用这个代码作为名称  -->
+		<property name="useCodeAsDefaultMessage" value="true" />
+	</bean>
+
+<!-- 	定义注解URL映射处理器 ，所有的请求映射必须关联本地化拦截器-->
+<!-- 	<bean id="urlMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"> -->
+<!-- 		<property name="interceptors"> -->
+<!-- 			<list> -->
+<!-- 				定义本地化变更拦截器 -->
+<!-- 				<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" /> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 		<property name="order" value="1"></property> -->
+<!-- 	</bean> -->
+
+	<!-- 定义本地化处理器 -->
+	<!-- 基于session -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>
+<!-- 	基于请求 -->
+<!-- 	<bean id="localeResolver2" class="org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver"/> -->
+<!-- 	基于cookie -->
+<!-- 	<bean id="localeResolver3" class="org.springframework.web.servlet.i18n.CookieLocaleResolver" /> -->
+
+</beans>

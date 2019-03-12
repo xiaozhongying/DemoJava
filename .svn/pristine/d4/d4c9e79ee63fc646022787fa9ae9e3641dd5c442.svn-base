@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+	"-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+	"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="common.ipx.Ipx">
+
+<insert id="insert" parameterType="common.ipx.Ipx">
+	insert into DS_IPX
+	(ID, BEGIN, END, ADDRESS, IPX)
+	values
+	(#{id}, #{begin}, #{end}, #{address}, #{ipx})
+</insert>
+
+<delete id="deleteAll">
+	delete from DS_IPX
+</delete>
+
+</mapper>

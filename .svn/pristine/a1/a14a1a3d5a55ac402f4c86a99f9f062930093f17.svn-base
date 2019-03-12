@@ -1,0 +1,32 @@
+package dswork.cs.collection_test;
+
+public class Model
+{
+	public String title = "";
+	public String resource = "";
+	public String fbsj = "";//发布时间
+	public String connent = "";
+	public long categoryid = 0L;
+	public long pageid = 0L;
+	public String img = "";
+	public String wlurl = "";
+	public String summary = "";
+	public Model(String url)
+	{
+		url = url.replaceAll("http://www.visitgz.com", "").replaceAll("http://www.visitgz.gov.cn", "");
+		if(url.startsWith("/channels/"))
+		{
+			url = url.replaceAll("/channels/", "").replaceAll("\\.html", "");
+			categoryid = Long.parseLong(url);
+		}
+		if(url.startsWith("/contents/"))
+		{
+			url = url.replaceAll("/contents/", "").replaceAll("\\.html", "");
+			String[] x = url.split("/");
+			categoryid = Long.parseLong(x[0]);
+			pageid = Long.parseLong(x[1]);
+		}
+	}
+	
+	public Model(){}
+}

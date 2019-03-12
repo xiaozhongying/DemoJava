@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+<modelVersion>4.0.0</modelVersion>
+<groupId>dswork</groupId>
+<artifactId>DemoJava</artifactId>
+<packaging>pom</packaging>
+<version>0.0.0-SNAPSHOT</version>
+<name>DemoJava</name>
+<url>https://github.com/skeychen/dswork</url>
+
+<dependencies>
+	<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-javaweb</artifactId><version>8.8.1</version><type>pom</type></dependency>
+	<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-html</artifactId><version>8.8.1</version></dependency>
+	<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-sso</artifactId><version>8.8.1</version></dependency>
+	
+	<dependency><groupId>org.xerial</groupId><artifactId>sqlite-jdbc</artifactId><version>3.7.2</version></dependency>
+	<dependency><groupId>mysql</groupId><artifactId>mysql-connector-java</artifactId><version>5.1.45</version></dependency>
+	<dependency><groupId>com.github.skeychen</groupId><artifactId>dswork-ee</artifactId><version>8.8.1</version><scope>provided</scope></dependency>
+
+	<dependency><groupId>com.sun.mail</groupId><artifactId>javax.mail</artifactId><version>1.5.6</version>
+		<exclusions>
+			<exclusion><groupId>javax.activation</groupId><artifactId>activation</artifactId></exclusion>
+		</exclusions>
+	</dependency>
+</dependencies>
+
+<build>
+	<finalName>DemoJava</finalName>
+	<outputDirectory>web/WEB-INF/classes</outputDirectory>
+</build>
+</project>

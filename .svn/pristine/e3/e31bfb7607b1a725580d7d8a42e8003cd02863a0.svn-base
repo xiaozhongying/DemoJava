@@ -1,0 +1,8 @@
+/**
+ * 内容Model
+ */
+package testwork.model;
+
+public class DsCmsPage
+{
+}

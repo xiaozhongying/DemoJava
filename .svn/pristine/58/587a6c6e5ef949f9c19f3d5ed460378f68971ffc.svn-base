@@ -1,0 +1,37 @@
+package dswork.cs.collection_test;
+
+import java.io.InputStream;
+
+import dswork.core.util.FileUtil;
+
+public class Util
+{
+	/**
+	 * 下载原图到指定目录
+	 * @param is   文件流
+	 * @param path  指定目录
+	 * @param overwrite 是否覆盖
+	 */
+	public static void downLoadImg(InputStream is, String path, boolean overwrite)
+	{
+		FileUtil.writeFile(path, is, overwrite);
+	}
+	
+	
+	/**
+	 * 压缩图片后存到指定目录
+	 * @param is
+	 * @param path
+	 */
+	public static void downLoadImgCompression(String path_, String path, boolean overwrite)
+	{
+		byte[] bytes = FileUtil.getToByte(path_);
+		InputStream is = FileUtil.getToInputStream(bytes);
+		byte[] arr = dswork.core.util.ImageUtil.resize(is, 1000, 1000);
+		if(arr == null)
+		{
+			arr = bytes;
+		}
+		FileUtil.writeFile(path, FileUtil.getToInputStream(arr), overwrite);
+	}
+}

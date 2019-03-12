@@ -1,0 +1,8 @@
+/**
+ * 栏目Model
+ */
+package testwork.model;
+
+public class DsCmsCategory
+{
+}

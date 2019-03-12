@@ -1,0 +1,16 @@
+2018-07-17 18:54:53,676 [INFO] jdbc.sqlonly - set master datasource
+2018-07-17 18:54:53,731 [INFO] jdbc.sqlonly - 1. Connection opened
+2018-07-17 18:54:53,736 [INFO] jdbc.sqlonly - 
+1. select 'x'
+2018-07-17 18:54:53,739 [INFO] jdbc.sqlonly - 1. Connection closed 
+2018-07-17 18:54:53,741 [INFO] jdbc.sqlonly - 2. Connection opened
+2018-07-17 18:54:53,790 [INFO] jdbc.sqlonly - 
+2. insert into DEMO
+	(ID, TITLE, CONTENT, FOUNDTIME)
+	values
+	(null, 'Title', 'Content', '2010-01-01')
+2018-07-17 18:54:53,793 [INFO] jdbc.sqlonly - 
+2. select LAST_INSERT_ROWID()
+2018-07-17 18:54:53,878 [INFO] jdbc.sqlonly - set master datasource
+2018-07-17 18:54:53,879 [INFO] jdbc.sqlonly - 
+2. select    ID, TITLE, CONTENT, FOUNDTIME  from DEMO

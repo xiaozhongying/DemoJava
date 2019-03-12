@@ -1,0 +1,574 @@
+package dswork.cs.collection_test;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import common.json.GsonUtil;
+import dswork.cms.model.DsCmsCategory;
+import dswork.cms.model.DsCmsPage;
+import dswork.core.util.FileUtil;
+import dswork.html.HtmlUtil;
+import dswork.html.nodes.Document;
+import dswork.html.nodes.Element;
+import dswork.http.HttpUtil;
+import dswork.spring.BeanFactory;
+import testwork.dao.DsCmsCategoryDao;
+import testwork.dao.DsCmsPageDao;
+
+/**
+ * 执行需要调用的任务
+ */
+@SuppressWarnings("unchecked")
+public class ExecuteProjectWww
+{
+	private static DsCmsCategoryDao cdao = (DsCmsCategoryDao)BeanFactory.getBean("myDsCmsCategoryDao");
+	private static DsCmsPageDao pdao = (DsCmsPageDao)BeanFactory.getBean("myDsCmsPageDao");
+	
+	private static List<Long> categoryIdList = new ArrayList<Long>();
+	private static Map<Long, Long> pidMap = new HashMap<Long, Long>();
+	private static List<Long> pageIdList = new ArrayList<Long>();
+	static
+	{
+		//初始化各个采集栏目的PID
+		initPidMap();
+		//初始化时获取已经存在category id集合
+		categoryIdList = cdao.queryId();
+		//初始化时获取已经存在page id集合
+		pageIdList = pdao.queryId();
+		System.out.println();
+	}
+	public static void saveCategory(Model m)
+	{
+		if(m != null)
+		{
+			if(!categoryIdList.contains(m.categoryid))//没有采集过的插入
+			{
+				DsCmsCategory po = new DsCmsCategory();
+				po.setId(m.categoryid);
+				po.setPid(pidMap.get(m.categoryid));
+				po.setSiteid(7);
+				po.setScope(0);
+				po.setImg(m.img);
+				po.setName(m.title);
+				po.setStatus(1);
+				po.setSeq(0);
+				po.setUrl("/a/" + m.categoryid + "/index.html");
+				po.setContent(m.connent);
+				try
+				{
+					cdao.save(po);
+				}
+				catch(Exception e)
+				{
+					m.connent = "";
+					String errlog = GsonUtil.toJson(m)+"\t errInfo:"+e.getMessage()+" \r\n";
+//					FileUtil.writeFile("D:/html/categoryErrorLog.txt", errlog, "UTF-8", false);//记录采集失败的栏目
+					byte[] bytes = FileUtil.getToByte("D:/html/categoryErrorLog.txt");
+					if(bytes != null)
+					{
+						InputStream is = FileUtil.getToInputStream(bytes);
+						String oldlog = FileUtil.getToString(is, "UTF-8");
+						FileUtil.writeFile("D:/html/categoryErrorLog.txt", oldlog+ "\r\n" + errlog, "UTF-8", true);
+					}
+				}
+			}
+			else
+			{
+				DsCmsCategory po = (DsCmsCategory) cdao.get(m.categoryid);
+				po.setImg(m.img);
+				po.setContent(m.connent);
+				try
+				{
+					cdao.updateContent(po);
+				}
+				catch(Exception e)
+				{
+					m.connent = "";
+					String errlog = GsonUtil.toJson(m)+"\t errInfo:"+e.getMessage()+" \r\n";
+//					FileUtil.writeFile("D:/html/categoryErrorLog.txt", errlog, "UTF-8", false);//记录更新失败的栏目
+					byte[] bytes = FileUtil.getToByte("D:/html/categoryErrorLog.txt");
+					if(bytes != null)
+					{
+						InputStream is = FileUtil.getToInputStream(bytes);
+						String oldlog = FileUtil.getToString(is, "UTF-8");
+						FileUtil.writeFile("D:/html/categoryErrorLog.txt", oldlog+ "\r\n" + errlog, "UTF-8", true);
+					}
+				}
+			}
+		}
+		
+	}
+	public static void savePage(Model m)
+	{
+		if(m != null)
+		{
+			DsCmsPage p = new DsCmsPage();
+			p.setId(m.pageid);
+			p.setCategoryid(m.categoryid);
+			p.setSiteid(7);
+			p.setImg(m.img);
+			p.setReleasesource(m.resource);
+			p.setReleasetime(m.fbsj);
+			p.setContent(m.connent);
+			p.setSummary(m.summary);
+			p.setTitle(m.title);
+			p.setUrl("/a/" + m.categoryid + "/" + m.pageid + ".html");
+			try
+			{
+				pdao.save(p);
+			}
+			catch(Exception e)
+			{
+				m.connent = "";
+				String errlog = GsonUtil.toJson(m)+"\t errInfo:"+e.getMessage()+" \r\n";
+//				FileUtil.writeFile("D:/html/pageErrorLog.txt", errlog, "UTF-8", false);//记录采集失败的内容页
+				byte[] bytes = FileUtil.getToByte("D:/html/pageErrorLog.txt");
+				if(bytes != null)
+				{
+					InputStream is = FileUtil.getToInputStream(bytes);
+					String oldlog = FileUtil.getToString(is, "UTF-8");
+					FileUtil.writeFile("D:/html/pageErrorLog.txt", oldlog+ "\r\n" + errlog, "UTF-8", true);
+				}
+			}
+		}
+	}
+	
+	public static void saveWL(long categoryid, String title, String url)
+	{
+		DsCmsCategory po = new DsCmsCategory();
+		po.setId(categoryid);
+		po.setSiteid(7);
+		po.setScope(2);
+		po.setImg("");
+		po.setName(title);
+		po.setStatus(1);
+		po.setSeq(0);
+		po.setUrl(url);
+		po.setContent("");
+		cdao.save(po);
+	}
+	
+	public static void execute(String[] args)
+	{
+		HttpUtil http = new HttpUtil();
+		long[] arr = {12, 14, 15, 16, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 48, 49, 127, 50, 190, 139, 55};
+		for(long x : arr)
+		{
+			getCategoryList(x, http);
+		}
+		long[] arr21 = {2, 10, 11, 54, 119, 120, 121, 130, 137};
+		for(long x : arr21)
+		{
+			String url = categoryurl+ x + ".html";
+			saveCategory(getData21(url, http));
+		}
+		long[] arr22 = {29, 30, 31, 124, 125, 126, 171};
+		for(long x : arr22)
+		{
+			String url = categoryurl+ x + ".html";
+			saveCategory(getData22(url, http));
+		}
+		
+//		getData11("http://www.visitgz.gov.cn/contents/15/26887.html" , http);
+	}
+	static String webroot = "http://www.visitgz.gov.cn";
+	static String categoryurl = "http://www.visitgz.gov.cn/channels/";
+	static String pageurl = "http://www.visitgz.gov.cn/contents/";
+	static String imgpath = "D:/html/";
+	private static void getCategoryList(long categoryid, HttpUtil http)
+	{
+		String url = categoryurl+ categoryid + ".html";
+		Model m = new Model(url);
+		String html = http.create(url).connect();
+		Document doc = dswork.html.HtmlUtil.parse(html, true);
+		doc.prettyPrint(true);
+		doc.outline(true);
+		doc.charset("GB18030");
+		List<Element> titleList = doc.select(".lyxwBox .Title h5");
+		if(titleList.size() > 0)
+		{
+			m.title = titleList.get(0).text();
+		}
+		System.out.println("");
+		System.out.println(url);
+		System.out.println("-------------------------------------");
+		System.out.print("栏目:");
+		System.out.print(m.categoryid);
+		System.out.print(",");
+		System.out.print(m.pageid);
+		System.out.print(",");
+		System.out.print(m.title);
+		System.out.print(",");
+		System.out.print(m.resource);
+		System.out.print(",");
+		System.out.print(m.fbsj);
+		
+		saveCategory(m);
+		
+		
+		List<Element> dataList = doc.select(".lyxwBox .page");
+		if(dataList.size() > 0)
+		{
+			dataList = dataList.get(0).getElementsByTag("a");
+			Element page = dataList.get(dataList.size() - 1);
+			int size = Integer.parseInt(page.attr("href").replaceAll("/channels/" + categoryid + "_", "").replaceAll("\\.html", ""));
+			int count = 1;
+			for(int i = 1; i <= size; i++)
+			{
+				url = categoryurl+ categoryid + (i == 1 ? "" : ("_" + i)) + ".html";
+				List<String> urlList = getDataListURL(url, http);
+				for(String p : urlList)
+				{
+					Model pageModel = getData11(webroot + p, http);
+					if(pageModel == null)
+					{
+						continue;
+					}
+					if(pageModel.categoryid != categoryid)
+					{
+						System.err.println(webroot + p + "地址错误对应栏目:" + categoryid);
+					}
+					//if(pageModel.pageid > 27360)
+					//{
+						System.out.println("");
+						System.out.print(count++);
+						System.out.print(",");
+						System.out.print(pageModel.categoryid);
+						System.out.print(",");
+						System.out.print(pageModel.pageid);
+						System.out.print(",");
+						System.out.print(pageModel.title);
+						System.out.print(",");
+						System.out.print(pageModel.resource);
+						System.out.print(",");
+						System.out.print(pageModel.fbsj);
+						System.out.println("");
+					//}
+					savePage(pageModel);
+				}
+			}
+		}
+	}
+	
+	public static List<String> getDataListURL(String url, HttpUtil http)
+	{
+		String html = http.create(url).connect();
+		Document doc = dswork.html.HtmlUtil.parse(html, true);
+		doc.prettyPrint(true);
+		doc.outline(true);
+		doc.charset("GB18030");
+		//List<Element> titleList = doc.select(".lyxwBox .Title h5");
+		List<Element> dataList = doc.select(".lyxwBox .txtList ul li a");
+		List<String> urlList = new ArrayList<String>();
+		if(dataList.size() > 0)
+		{
+			for(Element e : dataList)
+			{
+				urlList.add(e.attr("href"));
+			}
+		}
+		return urlList;
+	}
+	
+	private static Model getData11(String url, HttpUtil http)
+	{
+		Model m = new Model(url);
+		try
+		{
+			if(pageIdList.contains(m.pageid))//没有采集过的内容才需要入库操作
+			{
+				return null;
+			}
+			String html = http.create(url).connect();
+			// System.out.println(html);
+			Document doc = dswork.html.HtmlUtil.parse(html, true);
+			doc.prettyPrint(true);
+			doc.outline(true);
+			doc.charset("GB18030");
+			List<Element> dataList = doc.select(".lyxwBox .txtView h1");
+			if(dataList.size() > 0)
+			{
+				m.title = dataList.get(0).text();
+			}
+			dataList = doc.select(".lyxwBox .txtView .app");
+			if(dataList.size() > 0)
+			{
+				String x = dataList.get(0).text().replaceAll("发布时间：", "").replaceAll("来源：", "").replaceAll(" ", "").replaceAll(" ", "").trim();
+				m.fbsj = x.substring(0, 10);
+				m.resource = x.substring(10).trim();
+			}
+			Element nr = doc.getElementById("content");
+			List<Element> list = nr.getElementsByTag("img");
+			// TODO
+			if(list.size() > 0)
+			{
+		//			m.img = list.get(0).attr("src");
+				for(Element e : list)
+				{
+					String imgSrc = e.attr("src");
+					if(imgSrc.startsWith("/"))
+					{
+						m.img = cleanImgSrc(imgSrc);
+						break;
+					}
+				}
+			}
+			String tempHtml = nr.html();
+			for(int i = 0; i < list.size(); i++)
+			{
+		//			System.out.println(list.get(i).attr("src"));
+				String imgSrc = list.get(i).attr("src");
+				if(imgSrc.startsWith("/"))
+				{
+					String cleanImgSrc = cleanImgSrc(imgSrc);
+					tempHtml = tempHtml.replaceAll(imgSrc, cleanImgSrc);
+					downloadImg(imgSrc, cleanImgSrc, http);
+				}
+			}
+			m.connent = tempHtml;
+//			System.out.println(tempHtml);
+			Document connentDoc = HtmlUtil.parse(m.connent);
+			//获取摘要
+			String summary = connentDoc.text().replaceAll("&rdquo;", "").replaceAll("&ldquo;", "").replaceAll(" ", "").replaceAll(" ", "");
+			if(!"".equals(summary))
+			{
+				if(summary.length() > 250)
+				{
+					summary = summary.substring(0, 250);
+				}
+			}
+			m.summary = summary;
+			return m;
+		}catch(Exception e)
+		{
+			m.connent = "";
+			String errlog = GsonUtil.toJson(m)+"\t errInfo:"+e.getMessage()+" \r\n";
+//			System.err.println(errlog);
+//			FileUtil.writeFile("D:/html/pageErrorLog.txt", errlog, "UTF-8", false);
+			byte[] bytes = FileUtil.getToByte("D:/html/pageErrorLog.txt");
+			if(bytes != null)
+			{
+				InputStream is = FileUtil.getToInputStream(bytes);
+				String oldlog = FileUtil.getToString(is, "UTF-8");
+				FileUtil.writeFile("D:/html/pageErrorLog.txt", oldlog+ "\r\n" + errlog, "UTF-8", true);
+			}
+			return null;
+		}
+	}
+	
+	private static Model getData21(String url, HttpUtil http)
+	{
+		Model m = new Model(url);
+		try
+		{
+			String html = http.create(url).connect();
+			// System.out.println(html);
+			Document doc = dswork.html.HtmlUtil.parse(html, true);
+			doc.prettyPrint(true);
+			doc.outline(true);
+			doc.charset("GB18030");
+			for(Element e : doc.getElementsByTag("script"))
+			{
+				e.remove();
+			}
+			List<Element> dataList = doc.select(".lyxwBox .Title h5");
+			if(dataList.size() > 0)
+			{
+				m.title = dataList.get(0).text();
+			}
+			dataList = doc.select(".lyxwBox .Text");
+			Element nr = null;
+			if(dataList.size() > 0)
+			{
+				nr = dataList.get(0);
+			}
+			if(nr != null)
+			{
+				List<Element> list = nr.getElementsByTag("img");
+				// TODO
+				if(list.size() > 0)
+				{
+//				m.img = list.get(0).attr("src");
+					for(Element e : list)
+					{
+						String imgSrc = e.attr("src");
+						if(imgSrc.startsWith("/"))
+						{
+							m.img = cleanImgSrc(imgSrc);
+							break;
+						}
+					}
+				}
+				String tempHtml = nr.html();
+				for(int i = 0; i < list.size(); i++)
+				{
+//				System.out.println(list.get(i).attr("src"));
+					String imgSrc = list.get(i).attr("src");
+					if(imgSrc.startsWith("/"))
+					{
+						String cleanImgSrc = cleanImgSrc(imgSrc);
+						tempHtml = tempHtml.replaceAll(imgSrc, cleanImgSrc);
+						downloadImg(imgSrc, cleanImgSrc, http);
+					}
+				}
+				m.connent = tempHtml;
+			}
+			return m;
+		}
+		catch(Exception e)
+		{
+			m.connent = "";
+			String errlog = GsonUtil.toJson(m)+"\t errInfo:"+e.getMessage()+" \r\n";
+//			System.err.println(errlog);
+//			FileUtil.writeFile("D:/html/categoryErrorLog.txt", errlog, "UTF-8", false);
+			byte[] bytes = FileUtil.getToByte("D:/html/categoryErrorLog.txt");
+			if(bytes != null)
+			{
+				InputStream is = FileUtil.getToInputStream(bytes);
+				String oldlog = FileUtil.getToString(is, "UTF-8");
+				FileUtil.writeFile("D:/html/categoryErrorLog.txt", oldlog+ "\r\n" + errlog, "UTF-8", true);
+			}
+			return null;
+		}
+	}
+	
+	private static Model getData22(String url, HttpUtil http)
+	{
+		Model m = new Model(url);
+		try
+		{
+			String html = http.create(url).connect();
+			// System.out.println(html);
+			Document doc = dswork.html.HtmlUtil.parse(html, true);
+			doc.prettyPrint(true);
+			doc.outline(true);
+			doc.charset("GB18030");
+			List<Element> dataList = doc.select(".TS_xlyfBox .Title h5");
+			if(dataList.size() > 0)
+			{
+				m.title = dataList.get(0).text();
+			}
+			dataList = doc.select(".TS_xlyfBox .Text");
+			Element nr = null;
+			if(dataList.size() > 0)
+			{
+				nr = dataList.get(0);
+			}
+			if(nr != null)
+			{
+				List<Element> list = nr.getElementsByTag("img");
+				// TODO
+				if(list.size() > 0)
+				{
+//					m.img = list.get(0).attr("src");
+					for(Element e : list)
+					{
+						String imgSrc = e.attr("src");
+						if(imgSrc.startsWith("/"))
+						{
+							m.img = cleanImgSrc(imgSrc);
+							break;
+						}
+					}
+				}
+				String tempHtml = nr.html();
+				for(int i = 0; i < list.size(); i++)
+				{
+//					System.out.println(list.get(i).attr("src"));
+					String imgSrc = list.get(i).attr("src");
+					if(imgSrc.startsWith("/"))
+					{
+						String cleanImgSrc = cleanImgSrc(imgSrc);
+						tempHtml = tempHtml.replaceAll(imgSrc, cleanImgSrc);
+						downloadImg(imgSrc, cleanImgSrc, http);
+					}
+				}
+				m.connent = tempHtml;
+			}
+			return m;
+		}
+		catch(Exception e)
+		{
+			m.connent = "";
+			String errlog = GsonUtil.toJson(m)+"\t errInfo:"+e.getMessage()+" \r\n";
+//			System.err.println(errlog);
+//			FileUtil.writeFile("D:/html/categoryErrorLog.txt", errlog, "UTF-8", false);
+			byte[] bytes = FileUtil.getToByte("D:/html/categoryErrorLog.txt");
+			if(bytes != null)
+			{
+				InputStream is = FileUtil.getToInputStream(bytes);
+				String oldlog = FileUtil.getToString(is, "UTF-8");
+				FileUtil.writeFile("D:/html/categoryErrorLog.txt", oldlog+ "\r\n" + errlog, "UTF-8", true);
+			}
+			return null;
+		}
+	}
+	/**
+	 * 下载图片到本地
+	 * @param src
+	 * @param path
+	 * @throws Exception 
+	 */
+	private static void downloadImg(String src, String path, HttpUtil http) throws Exception
+	{
+		if(src.startsWith("/"))
+		{
+			src = webroot + src;
+			path = imgpath + path;
+			System.out.println("download image: " + src);
+			http.create(src);
+			InputStream is = http.connectStream();
+			if(is != null)
+			{
+//				FileUtil.writeFile(path, is, true);//下载原图
+				Util.downLoadImg(is, path, true);//下载原图
+				
+				String path_ = path;
+				path = imgpath + "visitgz_compression"+path.substring(path.indexOf("visitgz")+7);
+				Util.downLoadImgCompression(path_, path, true);
+			}
+			else
+			{
+				System.err.println("download error: " + src);
+				throw new Exception("download error: " + src);
+			}
+		}
+	}
+	
+	/**
+	 * 将图片路径按我们的规则转换
+	 * @param imgSrc
+	 * @author lhm
+	 * @return
+	 */
+	private static String cleanImgSrc(String imgSrc)
+	{
+		String img = "/visitgz/f/img";
+		String[] arr = imgSrc.split("/");
+		String year = "/"+arr[arr.length-3];
+		String month = arr[arr.length-2].length() < 2 ? "0"+arr[arr.length-2] : arr[arr.length-2];
+		String imgname = "/"+arr[arr.length-1];
+		img = img + year + month + imgname;
+		return img;
+	}
+	
+	/**
+	 * 初始化各个采集栏目的PID（父ID）
+	 * @author lhm
+	 */
+	private static void initPidMap()
+	{
+		//【单页21】 : 10, 11, 54, 119, 120, 121, 130, 137
+		pidMap.put(10L, 2L);pidMap.put(11L, 2L);pidMap.put(54L, 9L);pidMap.put(119L, 9L);pidMap.put(120L, 9L);pidMap.put(121L, 9L);pidMap.put(130L, 9L);pidMap.put(137L, 9L);
+		//【单页22】 : 29, 30, 31, 124, 125, 126, 171
+		pidMap.put(29L, 28L);pidMap.put(30L, 28L);pidMap.put(31L, 28L);pidMap.put(124L, 28L);pidMap.put(125L, 28L);pidMap.put(126L, 28L);pidMap.put(171L, 28L);
+		//【列表】 : 12, 14, 15, 16, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 48, 49, 127, 50, 190, 139, 55
+		pidMap.put(12L, 2L);pidMap.put(14L, 13L);pidMap.put(15L, 13L);pidMap.put(16L, 13L);pidMap.put(34L, 33L);pidMap.put(35L, 33L);pidMap.put(36L, 33L);
+		pidMap.put(38L, 37L);pidMap.put(39L, 37L);pidMap.put(40L, 37L);pidMap.put(41L, 4L);pidMap.put(42L, 4L);pidMap.put(43L, 4L);pidMap.put(44L, 4L);
+		pidMap.put(48L, 6L);pidMap.put(49L, 6L);pidMap.put(127L, 6L);pidMap.put(50L, 6L);pidMap.put(190L, 6L);pidMap.put(139L, 114L);pidMap.put(55L, 9L);
+	}
+	
+}

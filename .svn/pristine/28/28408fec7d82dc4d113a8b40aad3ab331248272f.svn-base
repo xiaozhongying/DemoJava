@@ -1,0 +1,27 @@
+如果作为web项目运行删除bin目录；如果作为cs项目运行保留src、common、config和bin目录，移除所有和web有关的配置和jar
+项目编译基于jdk6或jdk7，但运行环境必须jdk7以上，生产环境使用server-jre(windows环境下目前只能用jre)
+
+以下举例：
+	假设需要创建的web项目名为“test”，包根目录为“com.test”
+	原项目名为“DemoJava”，包根目录原为“testwork”
+	
+1、DemoJava/.settings/org.eclipse.wst.common.component
+	修改其中的“DemoJava”为新的项目名“test”(共三处)
+
+2、DemoJava/.project
+	修改projectDescription下的name属性为新项目名“test”(共一处)
+
+3、DemoJava/src目录下面的包目录级别/testwork改为/com/test(共一处)
+
+5、DemoJava/config/config/config.properties
+	修改其中的数据库连接信息
+	修改dswork.base-package的值为新的包路径(共一处)：dswork.base-package=com.test
+
+6、DemoJava/web/manage/frame/index.jsp
+	修改里面的系统名称，取名为新建系统的名称(共两处)
+
+7、最后，把此项目的目录名“DemoJava”改为项目名“good”，并删除本文本文件。(共一处)
+
+8、你已经可以加载项目到eclipse中了
+
+9、加载后，删除无关的源代码目录"ex"
